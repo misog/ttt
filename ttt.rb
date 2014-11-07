@@ -20,15 +20,15 @@ def draw_game_board(game_board)
 end
 
 def empty_positions(game_board)
-  array = []
+  array_of_open_squares= []
   i = 0
-  game_board.select.with_index do  |x,y|
-    if x == " "
-      array[i] = y
+  game_board.select.with_index do  |spot_value,index|
+    if spot_value == " "
+      array_of_open_squares[i] = index
       i += 1
     end
   end
-  array
+  array_of_open_squares
 end
 
 
@@ -77,10 +77,4 @@ begin
   winner = haz_winner(game_board)
   print_winning_message(winner)
 end until winner  != nil
-
-
-
-
-
-
 
