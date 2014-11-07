@@ -24,8 +24,8 @@ def empty_positions(game_board)
   i = 0
   game_board.select.with_index do  |x,y|
     if x == " "
-      array[i ] = y
-      i = i +1
+      array[i] = y
+      i += 1
     end
   end
   array
@@ -50,7 +50,6 @@ def check_user_input(user_choice, game_board)
   if game_board[user_choice] != " "
     puts "Please select an open Square"
     user_picks_square(game_board)
-    binding.pry
   end
 end
 
