@@ -4,6 +4,14 @@ require "pry"
 #game_board = {1 => '', 2 => '', 3 => '', 4 => '', 5 => '', 6 => '', 7 => '', 8 => '', 9 => ''}
 game_board = ["Do_Not_Use"," "," "," "," "," "," "," "," "," "]
 
+USE_KEYPAD_MAPPING = true
+
+keypad_mapping = {1=>7,2=>8,3=>9,4=>4,5=>5,6=>6,7=>1,8=>2,9=>3}
+
+def mapp_from_keypad(number,keypad_mapping)
+  number = keypad_mapping[number]
+end
+
 def draw_game_board(game_board)
   puts "\e[H\e[2J"
   puts "     |     |"
@@ -37,19 +45,22 @@ def computer_picks_square(game_board)
   game_board[position ]  = 'O'
 end
 
-def user_picks_square(game_board)
+def user_picks_square(game_board,keypad_mapping)
   begin
     puts "Choose a position (1 to 9) to place your X"
     user_choice = gets.chomp.to_i
   end while user_choice == 0
-  check_user_input(user_choice, game_board)
+  check_user_input(user_choice, game_board, keypad_mapping)
+  if USE_KEYPAD_MAPPING
+    user_choice = mapp_from_keypad(user_choice,keypad_mapping)
+  end
   game_board[user_choice] = "X"
 end
 
-def check_user_input(user_choice, game_board)
+def check_user_input(user_choice, game_board, keypad_mapping)
   if game_board[user_choice] != " "
     puts "Please select an open Square"
-    user_picks_square(game_board)
+    user_picks_square(game_board,keypad_mapping)
   end
 end
 
@@ -62,19 +73,21 @@ def haz_winner(game_board)
   nil
 end
 
-def print_winning_message(winner)
+def print_winning_message(winner,game_board)
   if winner == "Player"
+    draw_game_board(game_board)
     puts "You won!"
   else winner == "Computer"
+    draw_game_board(game_board)
     puts "Computer won!"
   end
 end
 
 begin
   draw_game_board(game_board)
-  user_picks_square(game_board)
+  user_picks_square(game_board,keypad_mapping)
   computer_picks_square(game_board)
   winner = haz_winner(game_board)
-  print_winning_message(winner)
+  print_winning_message(winner,game_board)
 end until winner  != nil
 
